@@ -1,0 +1,9 @@
+.flex {
+  display: flex;
+}
+
+.text-gradient {
+  background: var(--gradient-primary-secondary--bottom);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -1,0 +1,40 @@
+:root {
+    /* Color palette */
+    --color-blue:          #0078AB;
+    --color-green:         #24a77e;
+    --color-red:           #c13b29;
+    --color-teal:          #7ACFC5;
+    --color-gray-lightest: #d8d8d8;
+    --color-white:         #ffffff;
+    --color-black:         #000000;
+
+    /* Theme colors */
+    --color-primary:   var(--color-blue);
+    --color-secondary: var(--color-green);
+    --color-accent:    var(--color-red);
+    --gradient-light:                     linear-gradient(var(--color-green),var(--color-blue));
+    --gradient-primary-secondary:         linear-gradient(45deg, var(--color-green), var(--color-blue));
+    --gradient-primary-secondary--bottom: linear-gradient(to bottom, var(--color-green), var(--color-blue) );
+
+  /* Variables */
+  --base-font: "Karla", sans-serif;
+  --contentWidth: 800px;
+
+  /* Elements/components styling */
+  --body-bg:             var(--gradient-primary-secondary);
+  --body-text:           var(--color-white);
+  --link-text:           var(--color-white);
+  --link-text-hover:     var(--color-gray-lightest);
+
+  --header__navigation_link-text:     white;
+  --header__navigation_link-border:   rgba(255, 255, 255, 0.3);
+  --header__navigation_link-bg-hover: rgba(255, 255, 255, 0.2);
+
+  --section-bg:                      transparent;
+  --section-text:                    var(--color-white);
+
+  --section-bg--opaque:              var(--color-white);
+  --section-text--opaque:            var(--color-black);
+  --section-link-text--opaque:       var(--color-primary);
+  --section-link-text-hover--opaque: var(--color-secondary);
+}
