@@ -1,4 +1,4 @@
-Individuell uppgift u02 - Egen portfoliosida
+# Individuell uppgift u02 - Egen portfoliosida
 
-# Sammanfattning av projekt
-# Teoretiska frågor
+## Sammanfattning av projekt
+## Teoretiska frågor
