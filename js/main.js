@@ -110,6 +110,8 @@ function renderTechListContents(list, data) {
 /* ------------------------------------------------------ */
 
 // Scrolling horizontal marquee effect
+// Source: https://getbutterfly.com/javascript-marquee-a-collection-of-scrolling-text-snippets/
+
 function startMarquee(element, repeatCount = 7, step = 1) {
   function animateMarquee() {
       position = position < width ? position + step : 1;
@@ -134,7 +136,6 @@ function startMarquee(element, repeatCount = 7, step = 1) {
   animateMarquee();
 };
 
-
 // Scroll down to shrink the intro section
 window.addEventListener("scroll", () => {
   if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
@@ -142,6 +143,33 @@ window.addEventListener("scroll", () => {
   } else {
     document.querySelector(".intro").style.maxHeight = "100vh";
   }
+});
+
+// Scroll to sections from header nav links fix to adjust for the intro section shrinking on scrolling down
+document.querySelectorAll('header nav a').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+
+      // Convert 40rem to pixels
+      const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const remHeight = 40 * remInPixels;
+
+      // Get the height of 100vh in pixels
+      const vhHeight = window.innerHeight;
+
+      // Calculate the offset
+      const offset = vhHeight - remHeight;
+
+      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+
+      window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+      });
+  });
 });
 
 /* ------------------------------------------------------ */
