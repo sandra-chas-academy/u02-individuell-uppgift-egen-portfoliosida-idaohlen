@@ -47,6 +47,10 @@ h3, .heading-3 {
 
 /* Header ------------------------------------------- */
 
+.header {
+  animation: fade-in-down 1s;
+}
+
 .header__nav {
   padding: 2rem max(2rem, 40vw - var(--contentWidth) / 2);
   display: flex;
@@ -98,11 +102,12 @@ h3, .heading-3 {
 
   &:hover .socials-list__label {
     position: absolute;
-    bottom: -3rem;
+    bottom: -3.5rem;
     width: fit-content;
     left: 50%;
     transform: translateX(-50%);
     display: block;
+    animation: fade-in-social .5s;
   }
 }
 
@@ -161,11 +166,13 @@ h3, .heading-3 {
   background: var(--section-bg);
   color: var(--section-text);
   position: relative;
+  transition: max-height .7s;
 }
 
 .section__content {
   position: relative;
   z-index: 1;
+  transition: opacity .4s;
 }
 
 /* --Opaque */
@@ -197,11 +204,19 @@ h3, .heading-3 {
 
 /* Intro */
 
+.intro {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .intro .section__content {
   display: grid;
   grid-template-columns: 200px 1fr;
   align-items: center;
   gap: 3rem;
+  animation: fade-in-up 1s;
 }
 
 .intro__text {
@@ -298,10 +313,13 @@ h3, .heading-3 {
 /* Tech list */
 
 .tech-list {
-  overflow: hidden;
   display: flex;
-  gap: 2rem;
   padding: 2rem;
+  gap: 2rem;
+}
+
+.tech-list__wrapper {
+  overflow: hidden;
 }
 
 .tech-list__item {
@@ -333,8 +351,16 @@ h3, .heading-3 {
   overflow: hidden;
   background-color: var(--color-white);
   color: black;
-  /* border: 1px solid white; */
+  outline: 1px solid var(--color-secondary);
+  outline-offset: -1px;
   border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 18, 97, 0.268);
+  transition: all .4s;
+
+  &:hover {
+    transform: translateY(-1rem);
+    box-shadow: 0 3rem 3rem rgba(0, 18, 97, 0.268);
+  }
 }
 
 .card a {
@@ -392,6 +418,42 @@ h3, .heading-3 {
   border-radius: 100px;
 }
 
+
+/* Other ------------------------------------------- */
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+
+  }
+}
+@keyframes fade-in-social {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem) translateX(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+
+  }
+}
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+
+  }
+}
 
 /* Media queries ----------------------------------- */
 

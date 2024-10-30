@@ -3,6 +3,10 @@ const educationList = document.querySelector(".education-list");
 const workList = document.querySelector(".work-list");
 const techList = document.querySelector(".tech-list");
 
+/* ------------------------------------------------------ */
+// GET PAGE CONTENT
+/* ------------------------------------------------------ */
+
 // Load GitHub repos for Projects section
 function fetchGitHubRepos() {
 const loader = document.querySelector(".projects-loader");
@@ -101,6 +105,10 @@ function renderTechListContents(list, data) {
   startMarquee(techList, 16, 1);
 }
 
+/* ------------------------------------------------------ */
+// VISUAL EFFECTS
+/* ------------------------------------------------------ */
+
 // Scrolling horizontal marquee effect
 function startMarquee(element, repeatCount = 7, step = 1) {
   function animateMarquee() {
@@ -127,7 +135,19 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 };
 
 
-// Initializing code
+// Scroll down to shrink the intro section
+window.addEventListener("scroll", () => {
+  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
+      document.querySelector(".intro").style.maxHeight = "40rem";
+  } else {
+    document.querySelector(".intro").style.maxHeight = "100vh";
+  }
+});
+
+/* ------------------------------------------------------ */
+// INITIALIZING CODE
+/* ------------------------------------------------------ */
+
 fetchGitHubRepos();
 fetchExperience();
 fetchTechStack();
