@@ -1,0 +1,48 @@
+{
+  "education": [
+    {
+      "title": "Full Stack JavaScript Developer",
+      "place": "Chas Academy",
+      "location": "Stockholm",
+      "date": "2024 - Current",
+      "type": "Education"
+    },
+    {
+      "title": "Undergraduate in Arts & Design",
+      "place": "Basis Konstskola",
+      "location": "Location",
+      "date": "2012 - 2013",
+      "type": "Education"
+    },
+    {
+      "title": "Upper Secondary Education Diploma",
+      "place": "Ädelfors Folkhögskola",
+      "location": "Vetlanda",
+      "date": "2011 - 2012",
+      "type": "Education"
+    }
+  ],
+  "work": [
+    {
+      "title": "Graphic Designer",
+      "place": "Freelance",
+      "location": "Sweden",
+      "date": "2007 - current",
+      "type": "Work"
+    },
+    {
+      "title": "Service administrator & kitchen assistant",
+      "place": "Hotel & Restaurant",
+      "location": "Tierp",
+      "date": "2022 - 2023",
+      "type": "Work"
+    },
+    {
+      "title": "Assistant",
+      "place": "National Library of Sweden",
+      "location": "Bålsta",
+      "date": "2021",
+      "type": "Work"
+    }
+  ]
+}

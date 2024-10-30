@@ -1,0 +1,14 @@
+.flex {
+  display: flex;
+  gap: 4rem;
+}
+
+.col {
+  flex: 1;
+}
+
+.text-gradient {
+  background: var(--gradient-primary-secondary--bottom);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
