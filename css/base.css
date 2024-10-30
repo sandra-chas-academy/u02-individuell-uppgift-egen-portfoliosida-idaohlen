@@ -9,6 +9,7 @@ html, body {
 html {
   font-size: 62.5%;
   font-family: var(--base-font);
+  scroll-behavior: smooth;
 }
 
 body {
