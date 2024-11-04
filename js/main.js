@@ -1,3 +1,4 @@
+const toggleNav = document.querySelector(".toggle-nav");
 const projectsElement = document.querySelector(".projects-container");
 const educationList = document.querySelector(".education-list");
 const workList = document.querySelector(".work-list");
@@ -85,7 +86,7 @@ function fetchTechStack() {
   fetch("./data/tech.json")
   .then((response) => response.json())
   .then((data) => {
-    renderTechListContents(techList, data.tech);
+    renderTechListContents(techList, data);
   })
   .catch(error => console.error(error));
 }
@@ -175,6 +176,11 @@ document.querySelectorAll('header nav a').forEach(anchor => {
 /* ------------------------------------------------------ */
 // INITIALIZING CODE
 /* ------------------------------------------------------ */
+
+toggleNav.addEventListener("click", (e) => {
+  e.target.closest(".toggle-nav").classList.toggle("open");
+  document.querySelector(".header__nav").classList.toggle("hidden");
+});
 
 fetchGitHubRepos();
 fetchExperience();

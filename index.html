@@ -7,7 +7,7 @@
   <!-- Google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Karla -->
+  <!-- Font: Karla -->
   <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   <!-- Stylesheets -->
   <link rel="stylesheet" href="./css/index.css">
@@ -17,7 +17,13 @@
 <body>
   <div class="wrapper">
     <header class="header">
-      <nav class="header__nav">
+      <div class="toggle-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="header__nav hidden">
         <ul class="header__nav-list">
           <li class="header__nav-item"><a href="#skills"><i class="icon icon-lightbulb"></i> Skills</a></li>
           <li class="header__nav-item"><a href="#projects"><i class="icon icon-code"></i> Projects</a></li>
@@ -51,9 +57,13 @@
       <!-- Section: Skills -->
       <section id="skills" class="section section--opaque skills">
         <div class="section__content">
+          <h2 class="heading-2 text-gradient">Skills</h2>
+
           <div class="tech-list__wrapper">
             <div class="tech-list"></div>
           </div>
+
+
       </section>
 
       <!-- Section: Projects -->
