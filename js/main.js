@@ -1,3 +1,7 @@
+/* ------------------------------------------------------ */
+// DOM ELEMENTS
+/* ------------------------------------------------------ */
+
 const headerNav = document.querySelector(".header__nav");
 const toggleNav = document.querySelector(".toggle-nav");
 
@@ -9,8 +13,9 @@ const techList = document.querySelector(".tech-list");
 const dialog = document.querySelector(".dialog");
 const dialogContent = document.querySelector(".dialog__content");
 
+
 /* ------------------------------------------------------ */
-// GET PAGE CONTENT
+// FETCH & RENDER GITHUB REPOS FOR PROJECT SECTION
 /* ------------------------------------------------------ */
 
 // Load GitHub repos for Projects section
@@ -21,22 +26,22 @@ loader.style.display = "block";
   // fetch("data/repos.json")
   fetch("https://api.github.com/users/idaohlen/repos")
   .then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error('Unable to retrieve projects from GitHub.');
+    if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
+    return response.json();
   })
   .then( data => {
     // Do not include profile repo
     const repos =  data.filter(repo => repo.name !== "idaohlen");
     console.log(repos);
 
-    // Get the repos languages
+    // Get the repo's languages, which requires another API URL
     repos.forEach(repo => {
       fetch(repo.languages_url)
-      .then(response => response.json())
-      .then(
-        languages => {
+      .then(response => {
+        if (!response.ok) throw new Error('Unable to retrieve project languages from GitHub.');
+        return response.json();
+      })
+      .then(languages => {
           const card = document.createElement("div");
           card.classList.add("card");
           let languagesContent = "";
@@ -54,6 +59,7 @@ loader.style.display = "block";
           <div class="card__footer">${languagesContent}</div>
           `;
 
+          // Add project info into dialog content when clicking on the card
           card.addEventListener("click", (e) => {
             if (!e.target.classList.contains("icon-github")) {
 
@@ -69,23 +75,26 @@ loader.style.display = "block";
               openDialog();
             }
           });
-
-          // div.innerHTML = `${repo.name}: ${repo.description} ${Object.keys(languages).join(", ")}`;
           projectsElement.appendChild(card);
         }
-      )
+      ).catch(error => console.warn(error));
     });
 
     // Hide the loader
     loader.style.display = "none";
   })
   .catch(error => {
-    // Display error message if repos cannot be loaded
-    console.error(error);
+    // Display warning message if repos cannot be loaded
+    console.warn(error);
     loader.style.display = "none";
     projectsElement.textContent = "Unable to load projects.";
   });
 }
+
+
+/* ------------------------------------------------------ */
+// FETCH & RENDER ABOUT SECTION CONTENT
+/* ------------------------------------------------------ */
 
 // Fetch experiences for About section
 async function fetchExperience() {
@@ -113,6 +122,11 @@ function renderExperienceListContents(list, data) {
   });
 }
 
+
+/* ------------------------------------------------------ */
+// FETCH & RENDER SKILLS SECTION CONTENT
+/* ------------------------------------------------------ */
+
 // Fetch tech stack for Skills section
 function fetchTechStack() {
   fetch("./data/tech.json")
@@ -138,10 +152,10 @@ function renderTechListContents(list, data) {
   startMarquee(techList, 16, 1);
 }
 
-/* ------------------------------------------------------ */
-// VISUAL EFFECTS
-/* ------------------------------------------------------ */
 
+/* ------------------------------------------------------ */
+// SKILLS SECTION MARQUEE
+/* ------------------------------------------------------ */
 // Scrolling horizontal marquee effect
 // Source: https://getbutterfly.com/javascript-marquee-a-collection-of-scrolling-text-snippets/
 
@@ -169,6 +183,11 @@ function startMarquee(element, repeatCount = 7, step = 1) {
   animateMarquee();
 };
 
+
+/* ------------------------------------------------------ */
+// RESIZE INTRO SECTION ON SCROLL
+/* ------------------------------------------------------ */
+
 // Scroll down to shrink the intro section
 function handleScroll() {
   if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
@@ -179,7 +198,8 @@ function handleScroll() {
 }
 window.addEventListener("scroll", handleScroll);
 
-// Scroll to sections from header nav links fix to adjust for the intro section shrinking on scrolling down
+// Scroll to sections from header nav links
+// fix to adjust for the intro section shrinking on scrolling down
 document.querySelectorAll('header nav a').forEach(anchor => {
   console.log(anchor);
   anchor.addEventListener('click', function (e) {
@@ -207,38 +227,36 @@ document.querySelectorAll('header nav a').forEach(anchor => {
   });
 });
 
+
 /* ------------------------------------------------------ */
 // HEADER NAV
 /* ------------------------------------------------------ */
 
-// toggleNav.addEventListener("click", (e) => {
-//   e.target.closest(".toggle-nav").classList.toggle("open");
-//   headerNav.classList.toggle("hidden");
-// });
+// When resizing the window to mobile width, disable the transition
+// so there won't be a graphical glitch when the
+// header nav switches from desktop -> mobile -> hidden
+// Then turn the transition back on again
 
 function handleResize() {
-  if (window.innerWidth <= 670) {
+  // Temporarily remove transition from header nav
     headerNav.classList.add("no-transition");
-  } else {
-    headerNav.classList.remove("no-transition");
-  }
-}
 
+    // Put transition back after resize is done
+    setTimeout(() => {
+      headerNav.classList.remove("no-transition");
+    }, 0);
+}
 handleResize();
 
 // Add event listener for window resize
 window.addEventListener("resize", handleResize);
 
-// Add event listener for toggleNav click
+// Add event listener for toggling the mobile navigation
 toggleNav.addEventListener("click", (e) => {
   e.target.closest(".toggle-nav").classList.toggle("open");
   headerNav.classList.toggle("hidden");
-
-  // Remove the no-transition class after the click to allow future transitions
-  setTimeout(() => {
-    headerNav.classList.remove("no-transition");
-  }, 0);
 });
+
 
 /* ------------------------------------------------------ */
 // DIALOG MODAL
@@ -248,13 +266,15 @@ let scrollPosition = 0;
 let originalScrollListener = null;
 
 function openDialog() {
-  // Save scroll position so the page won't scroll to the top when modal is shown
+  // Save scroll position so the page won't
+  // scroll to the top when modal is shown
   scrollPosition = window.scrollY;
   document.body.style.position = 'fixed';
   document.body.style.top = `-${scrollPosition}px`;
   document.body.style.width = '100%';
 
-  // Remove the scroll event listener for the intro section since it is in conflict with the dialog scroll
+  // Remove the scroll event listener for the intro section
+  // since it is in conflict with the dialog scroll
   originalScrollListener = handleScroll;
   window.removeEventListener("scroll", handleScroll);
 
@@ -276,18 +296,22 @@ function closeDialog() {
   dialog.close();
 }
 
+// Add event listener to close the dialog when clicking outside the modal
 dialog.addEventListener('click', (e) => {
   if (!e.target.closest('.dialog__content')) {
     closeDialog();
   }
 });
 
+// Add event listener to close the dialog when
+// clicking on the "close" button in the modal
 document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
     closeDialog();
 });
 
+
 /* ------------------------------------------------------ */
-// INITIALIZING CODE
+// RENDER PAGE CONTENT
 /* ------------------------------------------------------ */
 
 fetchGitHubRepos();

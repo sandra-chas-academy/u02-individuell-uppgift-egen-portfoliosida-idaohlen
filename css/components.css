@@ -186,6 +186,7 @@ h3, .heading-3 {
   margin: 0;
   padding: 2rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
   list-style: none;
@@ -423,16 +424,13 @@ h3, .heading-3 {
   border-bottom: 1px dotted var(--color-secondary-light);
 }
 
-/* .experience-list__item:not(:last-child) {
-  border-bottom: 1px solid white;
-} */
-
 .experience-list__title {
   font-weight: 700;
   grid-column: 1 / span 3;
 }
 
 .experience-list__date {
+  width: fit-content;
   padding: .3rem .8rem;
   grid-column: 4;
   grid-row: 1;
@@ -681,4 +679,36 @@ h3, .heading-3 {
   .intro__tagline {
     margin-inline: auto;
   }
+
+  .experience-list__item {
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .experience-list__title {
+    margin-bottom: .5rem;
+    grid-column: 1 / -1;
+  }
+
+  .experience-list__date {
+    margin-top: .5rem;
+    margin-left: auto;
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  .experience-list__location {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .contact-list {
+    flex-direction: column;
+  }
+  .contact-list__item a {
+    justify-content: center;
+  }
+
 }
