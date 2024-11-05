@@ -58,7 +58,7 @@ h3, .heading-3 {
   flex-wrap: wrap;
   align-items: center;
   gap: 1.5rem;
-  transition: all .4s;
+  /* transition: all .4s; */
 }
 
 .header__nav-list {
@@ -257,7 +257,7 @@ h3, .heading-3 {
 /* Intro */
 
 .intro {
-  max-height: 600px;
+  /* max-height: 600px; */
   height: 100vh;
   display: flex;
   justify-content: center;

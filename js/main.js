@@ -1,3 +1,4 @@
+const headerNav = document.querySelector(".header__nav");
 const toggleNav = document.querySelector(".toggle-nav");
 
 const projectsElement = document.querySelector(".projects-container");
@@ -207,6 +208,39 @@ document.querySelectorAll('header nav a').forEach(anchor => {
 });
 
 /* ------------------------------------------------------ */
+// HEADER NAV
+/* ------------------------------------------------------ */
+
+// toggleNav.addEventListener("click", (e) => {
+//   e.target.closest(".toggle-nav").classList.toggle("open");
+//   headerNav.classList.toggle("hidden");
+// });
+
+function handleResize() {
+  if (window.innerWidth <= 670) {
+    headerNav.classList.add("no-transition");
+  } else {
+    headerNav.classList.remove("no-transition");
+  }
+}
+
+handleResize();
+
+// Add event listener for window resize
+window.addEventListener("resize", handleResize);
+
+// Add event listener for toggleNav click
+toggleNav.addEventListener("click", (e) => {
+  e.target.closest(".toggle-nav").classList.toggle("open");
+  headerNav.classList.toggle("hidden");
+
+  // Remove the no-transition class after the click to allow future transitions
+  setTimeout(() => {
+    headerNav.classList.remove("no-transition");
+  }, 0);
+});
+
+/* ------------------------------------------------------ */
 // DIALOG MODAL
 /* ------------------------------------------------------ */
 
@@ -255,11 +289,6 @@ document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
 /* ------------------------------------------------------ */
 // INITIALIZING CODE
 /* ------------------------------------------------------ */
-
-toggleNav.addEventListener("click", (e) => {
-  e.target.closest(".toggle-nav").classList.toggle("open");
-  document.querySelector(".header__nav").classList.toggle("hidden");
-});
 
 fetchGitHubRepos();
 fetchExperience();
