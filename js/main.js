@@ -1,20 +1,30 @@
 const toggleNav = document.querySelector(".toggle-nav");
+
 const projectsElement = document.querySelector(".projects-container");
 const educationList = document.querySelector(".education-list");
 const workList = document.querySelector(".work-list");
 const techList = document.querySelector(".tech-list");
+
+const dialog = document.querySelector(".dialog");
+const dialogContent = document.querySelector(".dialog__content");
 
 /* ------------------------------------------------------ */
 // GET PAGE CONTENT
 /* ------------------------------------------------------ */
 
 // Load GitHub repos for Projects section
-function fetchGitHubRepos() {
+async function fetchGitHubRepos() {
 const loader = document.querySelector(".projects-loader");
 loader.style.display = "block";
 
+  // fetch("data/repos.json")
   fetch("https://api.github.com/users/idaohlen/repos")
-  .then(response => response.json())
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Unable to retrieve projects from GitHub.');
+  })
   .then( data => {
     // Do not include profile repo
     const repos =  data.filter(repo => repo.name !== "idaohlen");
@@ -26,15 +36,15 @@ loader.style.display = "block";
       .then(response => response.json())
       .then(
         languages => {
-          const div = document.createElement("div");
-          div.classList.add("card");
+          const card = document.createElement("div");
+          card.classList.add("card");
           let languagesContent = "";
 
           Object.keys(languages).forEach(lang => {
             languagesContent += `<div class="pill">${lang}</div>`;
           });
 
-          div.innerHTML = `
+          card.innerHTML = `
           <div class="card__image"></div>
           <div class="card__content">
             <div class="card__title">${repo.name} <a href="${repo.html_url}" title="View on GitHub"><i class="icon icon-github"></i></a></div>
@@ -43,20 +53,41 @@ loader.style.display = "block";
           <div class="card__footer">${languagesContent}</div>
           `;
 
+          card.addEventListener("click", (e) => {
+            if (!e.target.classList.contains("icon-github")) {
+
+              dialogContent.innerHTML = `
+              <div class="dialog__title">${repo.name}</div>
+              <div class="dialog__description"> ${repo.description}</div>
+              <div class="dialog__tags">${languagesContent}</div>
+              <div class="dialog__links">
+                <a href="${repo.homepage}" class="btn"><i class="icon icon-scan_search"></i> Preview</a>
+                <a href="${repo.html_url}" class="btn"><i class="icon icon-github"></i> View on GitHub</a>
+              </div>
+              `;
+              openDialog();
+            }
+          });
+
           // div.innerHTML = `${repo.name}: ${repo.description} ${Object.keys(languages).join(", ")}`;
-          projectsElement.appendChild(div);
+          projectsElement.appendChild(card);
         }
-      );
+      )
     });
 
     // Hide the loader
     loader.style.display = "none";
   })
-  .catch(error => console.error(error));
+  .catch(error => {
+    // Display error message if repos cannot be loaded
+    console.error(error);
+    loader.style.display = "none";
+    projectsElement.textContent = "Unable to load projects.";
+  });
 }
 
 // Fetch experiences for About section
-function fetchExperience() {
+async function fetchExperience() {
   fetch("./data/experience.json")
   .then((response) => response.json())
   .then((data) => {
@@ -138,17 +169,19 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 };
 
 // Scroll down to shrink the intro section
-window.addEventListener("scroll", () => {
+function handleScroll() {
   if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
-      document.querySelector(".intro").style.maxHeight = "40rem";
-  } else {
-    document.querySelector(".intro").style.maxHeight = "100vh";
-  }
-});
+    document.querySelector(".intro").style.maxHeight = "40rem";
+} else {
+  document.querySelector(".intro").style.maxHeight = "100vh";
+}
+}
+window.addEventListener("scroll", handleScroll);
 
 // Scroll to sections from header nav links fix to adjust for the intro section shrinking on scrolling down
 document.querySelectorAll('header nav a').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
+  console.log(anchor);
+  anchor.addEventListener('click', function (e) {
       e.preventDefault();
 
       const targetId = this.getAttribute('href').substring(1);
@@ -171,6 +204,52 @@ document.querySelectorAll('header nav a').forEach(anchor => {
           behavior: 'smooth'
       });
   });
+});
+
+/* ------------------------------------------------------ */
+// DIALOG MODAL
+/* ------------------------------------------------------ */
+
+let scrollPosition = 0;
+let originalScrollListener = null;
+
+function openDialog() {
+  // Save scroll position so the page won't scroll to the top when modal is shown
+  scrollPosition = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollPosition}px`;
+  document.body.style.width = '100%';
+
+  // Remove the scroll event listener for the intro section since it is in conflict with the dialog scroll
+  originalScrollListener = handleScroll;
+  window.removeEventListener("scroll", handleScroll);
+
+  dialog.showModal();
+}
+
+function closeDialog() {
+  // Restore scroll position
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollPosition);
+
+  // Re-add the scroll event listener for the intro section
+  if (originalScrollListener) {
+    window.addEventListener("scroll", originalScrollListener);
+  }
+
+  dialog.close();
+}
+
+dialog.addEventListener('click', (e) => {
+  if (!e.target.closest('.dialog__content')) {
+    closeDialog();
+  }
+});
+
+document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
+    closeDialog();
 });
 
 /* ------------------------------------------------------ */

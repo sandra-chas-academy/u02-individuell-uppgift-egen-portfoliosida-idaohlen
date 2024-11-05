@@ -9,5 +9,6 @@
   { "name": "Sass", "icon": "icon_brand-sass" },
   { "name": "PHP", "icon": "icon_brand-php" },
   { "name": "Visual Studio Code", "icon": "icon_brand-vscode" },
+  { "name": "Figma", "icon": "icon_brand-figma" },
   { "name": "Unity Game Engine", "icon": "icon_brand-unity" }
 ]
