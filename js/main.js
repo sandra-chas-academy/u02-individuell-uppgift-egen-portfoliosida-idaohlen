@@ -19,7 +19,7 @@ const dialogContent = document.querySelector(".dialog__content");
 /* ------------------------------------------------------ */
 
 // Load GitHub repos for Projects section
-async function fetchGitHubRepos() {
+function loadRepos() {
 const loader = document.querySelector(".projects-loader");
 loader.style.display = "block";
 
@@ -29,10 +29,9 @@ loader.style.display = "block";
     if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
     return response.json();
   })
-  .then( data => {
+  .then(data => {
     // Do not include profile repo
-    const repos =  data.filter(repo => repo.name !== "idaohlen");
-    console.log(repos);
+    const repos = data.filter(repo => repo.name !== "idaohlen");
 
     // Get the repo's languages, which requires another API URL
     repos.forEach(repo => {
@@ -42,22 +41,36 @@ loader.style.display = "block";
         return response.json();
       })
       .then(languages => {
-          const card = document.createElement("div");
-          card.classList.add("card");
-          let languagesContent = "";
+        let languagesContent = "";
+        Object.keys(languages).forEach(lang => {
+          languagesContent += `<div class="pill">${lang}</div>`;
+        });
 
-          Object.keys(languages).forEach(lang => {
-            languagesContent += `<div class="pill">${lang}</div>`;
-          });
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-          card.innerHTML = `
-          <div class="card__image"></div>
-          <div class="card__content">
-            <div class="card__title">${repo.name} <a href="${repo.html_url}" title="View on GitHub"><i class="icon icon-github"></i></a></div>
-            <div class="card__description">${repo.description}</div>
-          </div>
-          <div class="card__footer">${languagesContent}</div>
+        let cardImage = `img/${repo.name}-thumbnail.webp`;
+
+        // Check if thumbnail image exists for project
+        fetch(cardImage)
+        .then(imageResponse => {
+          let cardHTML = `
+            <div class="card__content">
+              <div class="card__title">${repo.name} <a href="${repo.html_url}" title="View on GitHub"><i class="icon icon-github"></i></a></div>
+              <div class="card__description">${repo.description}</div>
+            </div>
+            <div class="card__footer">${languagesContent}</div>
           `;
+
+          // Add the appropriate HTML tag for the tag image
+          // depending on if a thumbnail exists or not
+          if (imageResponse.ok) {
+            cardHTML = `<div class="card__image" style='background-image:url(${cardImage})'></div>` + cardHTML;
+          } else {
+            cardHTML = `<div class="card__image"></div>` + cardHTML;
+          }
+
+          card.innerHTML = cardHTML;
 
           // Add project info into dialog content when clicking on the card
           card.addEventListener("click", (e) => {
@@ -75,11 +88,20 @@ loader.style.display = "block";
               openDialog();
             }
           });
-          projectsElement.appendChild(card);
-        }
-      ).catch(error => console.warn(error));
-    });
 
+        // Append card to projects container
+        projectsElement.appendChild(card);
+
+        if (!imageResponse.ok) {
+          throw new Error("Couldn't find project thumbnail.");
+        }
+        })
+        // Failed to fetch project thumbnail
+        .catch((error) => console.warn(error));
+      })
+      // Failed to fetch project languages
+    .catch(error => console.warn(error));
+    });
     // Hide the loader
     loader.style.display = "none";
   })
@@ -97,7 +119,7 @@ loader.style.display = "block";
 /* ------------------------------------------------------ */
 
 // Fetch experiences for About section
-async function fetchExperience() {
+function loadExperience() {
   fetch("./data/experience.json")
   .then((response) => response.json())
   .then((data) => {
@@ -128,7 +150,7 @@ function renderExperienceListContents(list, data) {
 /* ------------------------------------------------------ */
 
 // Fetch tech stack for Skills section
-function fetchTechStack() {
+function loadTechStack() {
   fetch("./data/tech.json")
   .then((response) => response.json())
   .then((data) => {
@@ -201,7 +223,6 @@ window.addEventListener("scroll", handleScroll);
 // Scroll to sections from header nav links
 // fix to adjust for the intro section shrinking on scrolling down
 document.querySelectorAll('header nav a').forEach(anchor => {
-  console.log(anchor);
   anchor.addEventListener('click', function (e) {
       e.preventDefault();
 
@@ -314,6 +335,6 @@ document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
 // RENDER PAGE CONTENT
 /* ------------------------------------------------------ */
 
-fetchGitHubRepos();
-fetchExperience();
-fetchTechStack();
+loadRepos();
+loadExperience();
+loadTechStack();

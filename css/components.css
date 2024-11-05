@@ -372,6 +372,11 @@ h3, .heading-3 {
     color: var(--color-secondary);
     animation: spin 1s;
   }
+  &:focus-visible {
+    outline: 1px solid var(--color-accent);
+    border-radius: 50%;
+  }
+
 }
 
 ::backdrop {
@@ -508,8 +513,9 @@ h3, .heading-3 {
 
 .card__image {
   height: 30vmin;
-  min-height: 140px;
-  max-height: 200px;
+  min-height: 200px;
+  max-height: 300px;
+  aspect-ratio: 1 / 1;
   width: 100%;
   background: var(--gradient-primary-secondary--bottom);
   background-position: 50% 50%;
