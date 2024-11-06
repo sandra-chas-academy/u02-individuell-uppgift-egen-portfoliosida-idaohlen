@@ -28,7 +28,7 @@ h2, .heading-2 {
   text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 2rem;
-  &::after {
+  &:not(.no-border)::after {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -334,9 +334,9 @@ h3, .heading-3 {
   font-size: 2rem;
 }
 
-.dialog__description {
+/* .dialog__description {
 
-}
+} */
 
 .dialog__tags {
   margin-top: 2rem;
@@ -716,5 +716,4 @@ h3, .heading-3 {
   .contact-list__item a {
     justify-content: center;
   }
-
 }

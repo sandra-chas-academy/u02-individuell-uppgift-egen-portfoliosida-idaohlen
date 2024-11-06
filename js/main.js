@@ -13,104 +13,118 @@ const techList = document.querySelector(".tech-list");
 const dialog = document.querySelector(".dialog");
 const dialogContent = document.querySelector(".dialog__content");
 
+const projectsLoader = document.querySelector(".projects-loader");
 
 /* ------------------------------------------------------ */
 // FETCH & RENDER GITHUB REPOS FOR PROJECT SECTION
 /* ------------------------------------------------------ */
 
 // Load GitHub repos for Projects section
-function loadRepos() {
-const loader = document.querySelector(".projects-loader");
-loader.style.display = "block";
+async function loadProjects() {
+  projectsLoader.style.display = "block";
+  let repos = [];
 
-  // fetch("data/repos.json")
-  fetch("https://api.github.com/users/idaohlen/repos")
-  .then(response => {
-    if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
-    return response.json();
-  })
-  .then(data => {
-    // Do not include profile repo
-    const repos = data.filter(repo => repo.name !== "idaohlen");
+  try {
+    repos = await getRepos();
+    if (!repos) throw new Error("Couldn't load projects.");
 
-    // Get the repo's languages, which requires another API URL
-    repos.forEach(repo => {
-      fetch(repo.languages_url)
-      .then(response => {
-        if (!response.ok) throw new Error('Unable to retrieve project languages from GitHub.');
-        return response.json();
-      })
-      .then(languages => {
-        let languagesContent = "";
-        Object.keys(languages).forEach(lang => {
-          languagesContent += `<div class="pill">${lang}</div>`;
-        });
-
-        const card = document.createElement("div");
-        card.classList.add("card");
-
-        let cardImage = `img/${repo.name}-thumbnail.webp`;
-
-        // Check if thumbnail image exists for project
-        fetch(cardImage)
-        .then(imageResponse => {
-          let cardHTML = `
-            <div class="card__content">
-              <div class="card__title">${repo.name} <a href="${repo.html_url}" title="View on GitHub"><i class="icon icon-github"></i></a></div>
-              <div class="card__description">${repo.description}</div>
-            </div>
-            <div class="card__footer">${languagesContent}</div>
-          `;
-
-          // Add the appropriate HTML tag for the tag image
-          // depending on if a thumbnail exists or not
-          if (imageResponse.ok) {
-            cardHTML = `<div class="card__image" style='background-image:url(${cardImage})'></div>` + cardHTML;
-          } else {
-            cardHTML = `<div class="card__image"></div>` + cardHTML;
-          }
-
-          card.innerHTML = cardHTML;
-
-          // Add project info into dialog content when clicking on the card
-          card.addEventListener("click", (e) => {
-            if (!e.target.classList.contains("icon-github")) {
-
-              dialogContent.innerHTML = `
-              <div class="dialog__title">${repo.name}</div>
-              <div class="dialog__description"> ${repo.description}</div>
-              <div class="dialog__tags">${languagesContent}</div>
-              <div class="dialog__links">
-                <a href="${repo.homepage}" class="btn"><i class="icon icon-scan_search"></i> Preview</a>
-                <a href="${repo.html_url}" class="btn"><i class="icon icon-github"></i> View on GitHub</a>
-              </div>
-              `;
-              openDialog();
-            }
-          });
-
-        // Append card to projects container
-        projectsElement.appendChild(card);
-
-        if (!imageResponse.ok) {
-          throw new Error("Couldn't find project thumbnail.");
-        }
-        })
-        // Failed to fetch project thumbnail
-        .catch((error) => console.warn(error));
-      })
-      // Failed to fetch project languages
-    .catch(error => console.warn(error));
-    });
-    // Hide the loader
-    loader.style.display = "none";
-  })
-  .catch(error => {
-    // Display warning message if repos cannot be loaded
+  } catch(error) {
     console.warn(error);
-    loader.style.display = "none";
+    projectsLoader.style.display = "none";
     projectsElement.textContent = "Unable to load projects.";
-  });
+  }
+
+  if (repos) {
+    // Create a card for each repo
+    for (const repo of repos) {
+      const card = document.createElement("div");
+      card.classList.add("card");
+
+      // Create HTML content from the repo languages
+      const languages = await getRepoLanguages(repo.languages_url);
+      let languagesHTML = "";
+      languages.forEach(lang => {
+        languagesHTML += `<div class="pill">${lang}</div>`;
+      });
+
+      const cardImagePath = `img/${repo.name}-thumbnail.webp`;
+      const cardImageHTML = await getCardImageHTML(cardImagePath);
+
+      let cardHTML = `
+        ${cardImageHTML}
+        <div class="card__content">
+          <div class="card__title">${repo.name} <a href="${repo.html_url}" title="View on GitHub"><i class="icon icon-github"></i></a></div>
+          <div class="card__description">${repo.description}</div>
+        </div>
+        <div class="card__footer">${languagesHTML}</div>
+      `;
+
+      card.innerHTML = cardHTML;
+
+      // Add project info into dialog content when clicking on the card
+      card.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("icon-github")) {
+
+          dialogContent.innerHTML = `
+          <div class="dialog__title">${repo.name}</div>
+          <div class="dialog__description"> ${repo.description}</div>
+          <div class="dialog__tags">${languagesHTML}</div>
+          <div class="dialog__links">
+            <a href="${repo.homepage}" class="btn"><i class="icon icon-scan_search"></i> Preview</a>
+            <a href="${repo.html_url}" class="btn"><i class="icon icon-github"></i> View on GitHub</a>
+          </div>
+          `;
+          openDialog();
+        }
+      });
+
+      // Append card to projects container
+      projectsElement.appendChild(card);
+      projectsLoader.style.display = "none";
+    }
+  }
+}
+
+// Get repos from GitHub
+async function getRepos() {
+  try {
+    const response = await fetch("https://api.github.com/users/idaohlen/repos");
+    if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
+
+    let repos = await response.json();
+    // Do not include profile repo
+    return repos.filter(repo => repo.name !== "idaohlen");
+
+  } catch(error) {
+    console.warn(error);
+  }
+}
+
+// Get a repos languages as an array with strings
+async function getRepoLanguages(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Unable to retrieve repo languages.');
+
+    const languages = await response.json();
+    return Object.keys(languages);
+
+  } catch(error) {
+    console.warn(error);
+  }
+}
+
+// If thumbnail exists for a project, return it as a
+// .card__image with the thumbnail as a background image
+// else, return .card__image with default background
+async function getCardImageHTML(url) {
+  const response = await fetch(url);
+
+  if (response.ok) {
+    return `<div class="card__image" style='background-image:url(${url})'></div>`;
+  } else {
+    return `<div class="card__image"></div>`;
+  }
 }
 
 
@@ -335,6 +349,6 @@ document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
 // RENDER PAGE CONTENT
 /* ------------------------------------------------------ */
 
-loadRepos();
+loadProjects()
 loadExperience();
 loadTechStack();
