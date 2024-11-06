@@ -322,6 +322,11 @@ h3, .heading-3 {
   position: relative;
   border: none;
   border-radius: 8px;
+  transition: transform .4s;
+}
+
+.dialog[open] {
+  animation: grow .4s;
 }
 
 .dialog__container {
@@ -481,6 +486,25 @@ h3, .heading-3 {
   scale: 1.2;
 }
 
+/* Skill list */
+
+.skill-list-container {
+  margin: 2rem;
+  display: grid;
+  gap: .8rem;
+}
+
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.skill-list__title {
+  font-weight: 600;
+}
+
 /* Loader */
 
 .projects-loader {
@@ -609,6 +633,15 @@ h3, .heading-3 {
   100% {
     transform: rotate(360deg);
 
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+      transform: scale(1);
   }
 }
 

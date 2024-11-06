@@ -61,7 +61,7 @@ async function loadProjects() {
 
       card.innerHTML = cardHTML;
 
-      // Add project info into dialog content when clicking on the card
+      // Display dialog when project info when clicking on the card
       card.addEventListener("click", (e) => {
         if (!e.target.classList.contains("icon-github")) {
 
@@ -100,7 +100,7 @@ async function getRepos() {
   }
 }
 
-// Get a repos languages as an array with strings
+// Get a repo's languages as an array of strings
 async function getRepoLanguages(url) {
   try {
     const response = await fetch(url);
