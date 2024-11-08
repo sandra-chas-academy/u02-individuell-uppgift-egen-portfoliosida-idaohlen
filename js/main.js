@@ -13,15 +13,15 @@ const techList = document.querySelector(".tech-list");
 const dialog = document.querySelector(".dialog");
 const dialogContent = document.querySelector(".dialog__content");
 
-const projectsLoader = document.querySelector(".projects-loader");
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // FETCH & RENDER GITHUB REPOS FOR PROJECT SECTION
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 // Load GitHub repos for Projects section
 async function loadProjects() {
-  projectsLoader.style.display = "block";
+  const loader = createLoader(".projects-container", "projects-loader");
+
   let repos = [];
 
   try {
@@ -30,7 +30,6 @@ async function loadProjects() {
 
   } catch(error) {
     console.warn(error);
-    projectsLoader.style.display = "none";
     projectsElement.textContent = "Unable to load projects.";
   }
 
@@ -79,8 +78,8 @@ async function loadProjects() {
       });
 
       // Append card to projects container
+      removeLoader(loader);
       projectsElement.appendChild(card);
-      projectsLoader.style.display = "none";
     }
   }
 }
@@ -128,19 +127,28 @@ async function getCardImageHTML(url) {
 }
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // FETCH & RENDER ABOUT SECTION CONTENT
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 // Fetch experiences for About section
 function loadExperience() {
+  const educationLoader = createLoader(".education-list", "education-loader");
+  const workLoader = createLoader(".work-list", "work-loader");
+
   fetch("./data/experience.json")
   .then((response) => response.json())
   .then((data) => {
+    removeLoader(educationLoader);
+    removeLoader(workLoader);
     renderExperienceListContents(educationList, data.education);
     renderExperienceListContents(workList, data.work);
   })
-  .catch(error => console.error(error));
+  .catch(error => {
+    removeLoader(educationLoader);
+    removeLoader(workLoader);
+    console.error(error);
+  });
 }
 
 // Render tech list contents from data source
@@ -159,9 +167,9 @@ function renderExperienceListContents(list, data) {
 }
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // FETCH & RENDER SKILLS SECTION CONTENT
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 // Fetch tech stack for Skills section
 function loadTechStack() {
@@ -189,9 +197,27 @@ function renderTechListContents(list, data) {
 }
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
+// LOADER
+/* ---------------------------------------------- */
+
+function createLoader(before, className) {
+  before = document.querySelector(before);
+
+  const loader = document.createElement("div");
+  loader.classList.add("loader", className);
+  return before.insertAdjacentElement('beforebegin', loader);
+}
+
+function removeLoader(loader) {
+  loader.style.opacity = "0";
+  loader.remove();
+}
+
+
+/* ---------------------------------------------- */
 // SKILLS SECTION MARQUEE
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // Scrolling horizontal marquee effect
 // Source: https://getbutterfly.com/javascript-marquee-a-collection-of-scrolling-text-snippets/
 
@@ -220,9 +246,9 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 };
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // RESIZE INTRO SECTION ON SCROLL
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 // Scroll down to shrink the intro section
 function handleScroll() {
@@ -263,9 +289,9 @@ document.querySelectorAll('header nav a').forEach(anchor => {
 });
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // HEADER NAV
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 // When resizing the window to mobile width, disable the transition
 // so there won't be a graphical glitch when the
@@ -293,9 +319,9 @@ toggleNav.addEventListener("click", (e) => {
 });
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // DIALOG MODAL
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 let scrollPosition = 0;
 let originalScrollListener = null;
@@ -345,9 +371,9 @@ document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
 });
 
 
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // RENDER PAGE CONTENT
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 loadProjects()
 loadExperience();

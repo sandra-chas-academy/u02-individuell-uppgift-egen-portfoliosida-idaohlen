@@ -319,7 +319,7 @@ h3, .heading-3 {
 /* Modal ------------------------------------------- */
 
 .dialog {
-  position: relative;
+  /* position: relative; */
   border: none;
   border-radius: 8px;
   transition: transform .4s;
@@ -413,6 +413,40 @@ h3, .heading-3 {
     background: var(--color-primary);
   }
 }
+
+/* Loader ------------------------------------------ */
+
+.loader {
+  --size: 5rem;
+  --thickness: 2.3rem;
+  /* max-height: 0;
+  opacity: 0; */
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  margin-bottom: 2rem;
+  background: conic-gradient(
+    transparent 45deg,
+    var(--color-primary) 125deg,
+    var(--color-secondary) 245deg
+  );
+  border-radius: 50%;
+  animation: spin 1s infinite;
+
+  &::after {
+    content: "";
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(var(--size) - var(--thickness));
+    height: calc(var(--size) - var(--thickness));
+    border-radius: 50%;
+
+  }
+}
+
 
 /* Other ------------------------------------------- */
 
