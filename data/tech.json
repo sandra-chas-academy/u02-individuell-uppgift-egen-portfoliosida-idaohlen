@@ -1,15 +1,14 @@
-{
-  "tech": [
-    { "name": "HTML", "icon": "icon_brand-html5" },
-    { "name": "CSS", "icon": "icon_brand-css3" },
-    { "name": "JavaScript", "icon": "icon_brand-js" },
-    { "name": "JQuery", "icon": "icon_brand-jquery" },
-    { "name": "Vue.js", "icon": "icon_brand-vuejs" },
-    { "name": "Quasar", "icon": "icon_brand-quasar" },
-    { "name": "Git", "icon": "icon_brand-git" },
-    { "name": "Sass", "icon": "icon_brand-sass" },
-    { "name": "PHP", "icon": "icon_brand-php" },
-    { "name": "Visual Studio Code", "icon": "icon_brand-vscode" },
-    { "name": "Unity Game Engine", "icon": "icon_brand-unity" }
-  ]
-}
+[
+  { "name": "HTML", "icon": "icon_brand-html5" },
+  { "name": "CSS", "icon": "icon_brand-css3" },
+  { "name": "JavaScript", "icon": "icon_brand-js" },
+  { "name": "JQuery", "icon": "icon_brand-jquery" },
+  { "name": "Vue.js", "icon": "icon_brand-vuejs" },
+  { "name": "Quasar", "icon": "icon_brand-quasar" },
+  { "name": "Git", "icon": "icon_brand-git" },
+  { "name": "Sass", "icon": "icon_brand-sass" },
+  { "name": "PHP", "icon": "icon_brand-php" },
+  { "name": "Visual Studio Code", "icon": "icon_brand-vscode" },
+  { "name": "Figma", "icon": "icon_brand-figma" },
+  { "name": "Unity Game Engine", "icon": "icon_brand-unity" }
+]
