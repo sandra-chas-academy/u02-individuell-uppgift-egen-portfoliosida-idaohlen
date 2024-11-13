@@ -26,6 +26,10 @@
       var(--color-blue) 125deg,
       var(--color-green) 245deg
     );
+    --gradient-white--conic: conic-gradient(
+      transparent 45deg,
+      var(--color-white) 125deg
+    );
 
   /* Variables */
   --base-font: "Karla", sans-serif;
@@ -96,6 +100,8 @@
 
   --loader-bg:       var(--gradient--conic);
   --loader-bg-after: var(--color-white);
+  --loader-bg--white: var(--gradient-white--conic);
+  --loader-bg-after--white: var(--color-secondary);
 
   --socials-list-text:          var(--color-secondary);
   --socials-list-bg:            var(--color-white);

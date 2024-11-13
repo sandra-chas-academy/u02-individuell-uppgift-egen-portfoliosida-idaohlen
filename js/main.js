@@ -20,7 +20,9 @@ const dialogContent = document.querySelector(".dialog__content");
 
 // Load GitHub repos for Projects section
 async function loadProjects() {
-  const loader = createLoader(".projects-container", "projects-loader");
+  const loader = createLoader(".projects-container", "projects-loader", "white");
+  projectsElement.style.maxHeight = "0";
+  projectsElement.style.opacity = "0";
 
   let repos = [];
 
@@ -78,10 +80,13 @@ async function loadProjects() {
       });
 
       // Append card to projects container
-      removeLoader(loader);
       projectsElement.appendChild(card);
+
     }
   }
+  removeLoader(loader);
+  projectsElement.style.maxHeight = "none";
+  projectsElement.style.opacity = "1";
 }
 
 // Get repos from GitHub
@@ -201,11 +206,12 @@ function renderTechListContents(list, data) {
 // LOADER
 /* ---------------------------------------------- */
 
-function createLoader(before, className) {
+function createLoader(before, className, style = false) {
   before = document.querySelector(before);
 
   const loader = document.createElement("div");
   loader.classList.add("loader", className);
+  if (style === "white") loader.classList.add("loader--white");
   return before.insertAdjacentElement('beforebegin', loader);
 }
 

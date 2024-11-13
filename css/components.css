@@ -316,6 +316,7 @@ h3, .heading-3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  transition: all .5s;
 }
 
 /* Modal ------------------------------------------- */
@@ -438,6 +439,15 @@ h3, .heading-3 {
   }
 }
 
+.loader--white {
+  background: var(--loader-bg--white);
+
+  &::after {
+    content: "";
+    background: var(--loader-bg-after--white);
+  }
+}
+
 
 /* Other ------------------------------------------- */
 
@@ -528,12 +538,6 @@ h3, .heading-3 {
 
 .skill-list__title {
   font-weight: 600;
-}
-
-/* Loader */
-
-.projects-loader {
-  display: none;
 }
 
 /* Cards */
