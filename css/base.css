@@ -35,7 +35,7 @@ img {
 
 a {
   color: var(--link-text);
-  text-decoration: underline var(--color-secondary);
+  text-decoration: underline var(--link-decoration);
   text-underline-offset: 4px;
 
   &:hover {

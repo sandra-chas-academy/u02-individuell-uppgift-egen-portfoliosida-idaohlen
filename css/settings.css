@@ -11,37 +11,98 @@
     --color-black:         #000000;
 
     /* Theme colors */
+    --color-primary:         var(--color-blue);
     --color-primary-light:   var(--color-blue-light);
-    --color-primary:   var(--color-blue);
-    --color-secondary: var(--color-green);
+    --color-secondary:       var(--color-green);
     --color-secondary-light: var(--color-green-light);
-    --color-accent:    var(--color-red);
-    --gradient-light:                     linear-gradient(var(--color-green),var(--color-blue));
-    --gradient-primary-secondary:         linear-gradient(45deg, var(--color-green), var(--color-blue));
-    --gradient-primary-secondary--bottom: linear-gradient(to bottom, var(--color-green), var(--color-blue) );
+    --color-accent:          var(--color-red);
+
+    --gradient-light:    linear-gradient(           var(--color-green), var(--color-blue));
+    --gradient:          linear-gradient(45deg,     var(--color-green), var(--color-blue));
+    --gradient--bottom:  linear-gradient(to bottom, var(--color-green), var(--color-blue));
+    --gradient--reverse: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    --gradient--conic:   conic-gradient(
+      transparent 45deg,
+      var(--color-blue) 125deg,
+      var(--color-green) 245deg
+    );
 
   /* Variables */
   --base-font: "Karla", sans-serif;
   --contentWidth: 800px;
 
   /* Elements/components styling */
-  --body-bg:             var(--gradient-primary-secondary);
+
+  --body-bg:             var(--gradient);
+  --body-bg-pattern:     var(--color-white);
   --body-text:           var(--color-white);
   --link-text:           var(--color-white);
   --link-text-hover:     var(--color-gray-lightest);
+  --link-decoration:     var(--color-secondary);
 
-  --heading-2-decoration-bg: linear-gradient(to right, transparent, var(--color-secondary-light) 5%,  transparent 95%);
-  --heading-2-decoration-bg--opaque: linear-gradient(to right, transparent, var(--color-secondary) 5%,  transparent 95%);
+  --heading-2-decoration-bg: linear-gradient(
+    to right,
+    transparent,
+    var(--color-secondary-light) 5%,
+    transparent 95%
+  );
+  --heading-2-decoration-bg--opaque: linear-gradient(
+    to right,
+    transparent,
+    var(--color-secondary) 5%,
+    transparent 95%
+  );
 
-  --header__navigation_link-text:     white;
-  --header__navigation_link-border:   rgba(255, 255, 255, 0.3);
-  --header__navigation_link-bg-hover: rgba(255, 255, 255, 0.2);
+  --nav-link-text:               var(--color-white);
+  --nav-link-border:           rgba(255, 255, 255, 0.3);
+  --nav-link-bg-hover:         rgba(255, 255, 255, 0.2);
+  --nav-link-text--mobile:       var(--color-primary);
+  --nav-link-bg--mobile:         var(--color-white);
+  --nav-link-text-hover--mobile: var(--color-white);
+  --nav-link-bg-hover--mobile:   var(--color-primary-light);
+  --toggle-nav-color:                var(--color-white);
 
   --section-bg:                      transparent;
   --section-text:                    var(--color-white);
 
   --section-bg--opaque:              var(--color-white);
+  --section-bg-border--opaque:       var(--gradient);
   --section-text--opaque:            var(--color-black);
   --section-link-text--opaque:       var(--color-primary);
   --section-link-text-hover--opaque: var(--color-secondary);
+
+  --intro-border:               var(--color-secondary-light);
+  --intro-image-border:         var(--gradient-light);
+  --intro-image-outline:        var(--color-white);
+
+  --dialog-backdrop:                   var(--gradient--reverse);
+  --dialog-close-button:               var(--color-accent);
+  --dialog-close-button-hover:         var(--color-secondary);
+  --dialog-close-button-focus-outline: var(--color-accent);
+
+  --card-bg:         var(--color-white);
+  --card-text:       var(--color-black);
+  --card-shadow:   rgba(0, 18, 97, 0.268);
+  --card-outline:    var(--color-secondary);
+  --card-link:       var(--color-primary);
+  --card-image:      var(--gradient--bottom);
+  --card-title-link: var(--color-black);
+
+  --pill-bg:         var(--color-primary);
+  --pill-text:       var(--color-white);
+
+  --btn-bg:          var(--color-secondary);
+  --btn-bg-hover:    var(--color-primary);
+
+  --loader-bg:       var(--gradient--conic);
+  --loader-bg-after: var(--color-white);
+
+  --socials-list-text:          var(--color-secondary);
+  --socials-list-bg:            var(--color-white);
+
+  --contact-list-text:          var(--color-primary);
+  --contact-list-outline-hover: var(--color-white);
+
+  --experience-list-border:     var(--color-secondary-light);
+  --experience-list-date-bg:    var(--color-secondary);
 }
