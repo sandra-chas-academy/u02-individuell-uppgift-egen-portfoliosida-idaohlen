@@ -57,58 +57,58 @@
     transparent 95%
   );
 
-  --nav-link-text:               var(--color-white);
-  --nav-link-border:           rgba(255, 255, 255, 0.3);
-  --nav-link-bg-hover:         rgba(255, 255, 255, 0.2);
-  --nav-link-text--mobile:       var(--color-primary);
-  --nav-link-bg--mobile:         var(--color-white);
-  --nav-link-text-hover--mobile: var(--color-white);
-  --nav-link-bg-hover--mobile:   var(--color-primary-light);
-  --toggle-nav-color:                var(--color-white);
+  --nav-link-text:                     var(--color-white);
+  --nav-link-border:                 rgba(255, 255, 255, 0.3);
+  --nav-link-bg-hover:               rgba(255, 255, 255, 0.2);
+  --nav-link-text--mobile:             var(--color-primary);
+  --nav-link-bg--mobile:               var(--color-white);
+  --nav-link-text-hover--mobile:       var(--color-white);
+  --nav-link-bg-hover--mobile:         var(--color-primary-light);
+  --toggle-nav-color:                  var(--color-white);
 
-  --section-bg:                      transparent;
-  --section-text:                    var(--color-white);
+  --section-bg:                        transparent;
+  --section-text:                      var(--color-white);
 
-  --section-bg--opaque:              var(--color-white);
-  --section-bg-border--opaque:       var(--gradient);
-  --section-text--opaque:            var(--color-black);
-  --section-link-text--opaque:       var(--color-primary);
-  --section-link-text-hover--opaque: var(--color-secondary);
+  --section-bg--opaque:                var(--color-white);
+  --section-bg-border--opaque:         var(--gradient);
+  --section-text--opaque:              var(--color-black);
+  --section-link-text--opaque:         var(--color-primary);
+  --section-link-text-hover--opaque:   var(--color-secondary);
 
-  --intro-border:               var(--color-secondary-light);
-  --intro-image-border:         var(--gradient-light);
-  --intro-image-outline:        var(--color-white);
+  --intro-border:                      var(--color-secondary-light);
+  --intro-image-border:                var(--gradient-light);
+  --intro-image-outline:               var(--color-white);
 
   --dialog-backdrop:                   var(--gradient--reverse);
   --dialog-close-button:               var(--color-accent);
   --dialog-close-button-hover:         var(--color-secondary);
   --dialog-close-button-focus-outline: var(--color-accent);
 
-  --card-bg:         var(--color-white);
-  --card-text:       var(--color-black);
-  --card-shadow:   rgba(0, 18, 97, 0.268);
-  --card-outline:    var(--color-secondary);
-  --card-link:       var(--color-primary);
-  --card-image:      var(--gradient--bottom);
-  --card-title-link: var(--color-black);
+  --card-bg:                           var(--color-white);
+  --card-text:                         var(--color-black);
+  --card-shadow:                     rgba(0, 18, 97, 0.268);
+  --card-outline:                      var(--color-secondary);
+  --card-link:                         var(--color-primary);
+  --card-image:                        var(--gradient--bottom);
+  --card-title-link:                   var(--color-black);
 
-  --pill-bg:         var(--color-primary);
-  --pill-text:       var(--color-white);
+  --pill-bg:                           var(--color-primary);
+  --pill-text:                         var(--color-white);
 
-  --btn-bg:          var(--color-secondary);
-  --btn-bg-hover:    var(--color-primary);
+  --btn-bg:                            var(--color-secondary);
+  --btn-bg-hover:                      var(--color-primary);
 
-  --loader-bg:       var(--gradient--conic);
-  --loader-bg-after: var(--color-white);
-  --loader-bg--white: var(--gradient-white--conic);
-  --loader-bg-after--white: var(--color-secondary);
+  --loader-bg:                         var(--gradient--conic);
+  --loader-bg-after:                   var(--color-white);
+  --loader-bg--white:                  var(--gradient-white--conic);
+  --loader-bg-after--white:            var(--color-secondary);
 
-  --socials-list-text:          var(--color-secondary);
-  --socials-list-bg:            var(--color-white);
+  --socials-list-text:                 var(--color-secondary);
+  --socials-list-bg:                   var(--color-white);
 
-  --contact-list-text:          var(--color-primary);
-  --contact-list-outline-hover: var(--color-white);
+  --contact-list-text:                 var(--color-primary);
+  --contact-list-outline-hover:        var(--color-white);
 
-  --experience-list-border:     var(--color-secondary-light);
-  --experience-list-date-bg:    var(--color-secondary);
+  --experience-list-border:            var(--color-secondary-light);
+  --experience-list-date-bg:           var(--color-secondary);
 }

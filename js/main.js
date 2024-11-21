@@ -1,6 +1,6 @@
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // DOM ELEMENTS
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 const headerNav = document.querySelector(".header__nav");
 const toggleNav = document.querySelector(".toggle-nav");
@@ -14,6 +14,16 @@ const techList = document.querySelector(".tech-list");
 
 const dialog = document.querySelector(".dialog");
 const dialogContent = document.querySelector(".dialog__content");
+
+
+/* ---------------------------------------------- */
+// VARIABLES
+/* ---------------------------------------------- */
+
+const introHeight = "40rem";
+const introFullHeight = "100vh";
+
+const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 
 /* ---------------------------------------------- */
@@ -194,7 +204,7 @@ function renderTechListContents(list, data) {
     const div = document.createElement("div");
     div.classList.add("tech-list__item");
     div.innerHTML = `
-          <i class="icon ${item.icon}" title="${item.name}"></i>
+      <i class="icon ${item.icon}" title="${item.name}"></i>
     `;
     list.appendChild(div);
   });
@@ -214,7 +224,8 @@ function createLoader(before, className, style = false) {
   const loader = document.createElement("div");
   loader.classList.add("loader", className);
   if (style === "white") loader.classList.add("loader--white");
-  return before.insertAdjacentElement('beforebegin', loader);
+
+  return before.insertAdjacentElement("beforebegin", loader);
 }
 
 function removeLoader(loader) {
@@ -231,21 +242,21 @@ function removeLoader(loader) {
 
 function startMarquee(element, repeatCount = 7, step = 1) {
   function animateMarquee() {
-      position = position < width ? position + step : 1;
-      element.style.marginLeft = `${-position}px`;
-      element.style.overflow = 'hidden';
-      element.style.whiteSpace = 'nowrap';
-      requestAnimationFrame(animateMarquee);
+    position = position < width ? position + step : 1;
+    element.style.marginLeft = `${-position}px`;
+    element.style.overflow = "hidden";
+    element.style.whiteSpace = "nowrap";
+    requestAnimationFrame(animateMarquee);
   };
 
   let position = 0;
   const initialStep = step;
-  const space = '';
+  const space = "";
   const content = element.innerHTML;
-  element.innerHTML = Array(repeatCount).fill(content + space).join('');
-  element.style.position = 'absolute';
+  element.innerHTML = Array(repeatCount).fill(content + space).join("");
+  element.style.position = "absolute";
   const width = element.clientWidth + 1;
-  element.style.position = '';
+  element.style.position = "";
 
   element.onmouseover = () => step = 0;
   element.onmouseout = () => step = initialStep;
@@ -262,9 +273,8 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 // go back to full height when scrolling back to the top
 const introResize = (entries, observer) => {
   const entry = entries[0];
-  if (!entry.isIntersecting) introSection.style.maxHeight ="40rem";
-  else introSection.style.maxHeight = "100vh";
-  ;
+  if (!entry.isIntersecting) introSection.style.maxHeight = introHeight;
+  else introSection.style.maxHeight = introFullHeight;
 }
 
 const introResizeObserver = new IntersectionObserver(introResize, {
@@ -276,29 +286,25 @@ introResizeObserver.observe(document.documentElement);
 
 // Scroll to sections from header nav links
 // fix to adjust for the intro section shrinking on scrolling down
-document.querySelectorAll('header nav a').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-      e.preventDefault();
+document.querySelectorAll("header nav a").forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
 
-      const targetId = this.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
+    const targetId = this.getAttribute("href").substring(1);
+    const targetElement = document.getElementById(targetId);
 
-      // Convert 40rem to pixels
-      const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const remHeight = 40 * remInPixels;
+    // Convert 40rem to pixels
+    const remHeight = Number.parseFloat(introHeight) * remInPixels;
 
-      // Get the height of 100vh in pixels
-      const vhHeight = window.innerHeight;
+    // Calculate the offset
+    const offset = window.innerHeight - remHeight;
 
-      // Calculate the offset
-      const offset = vhHeight - remHeight;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
 
-      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
-
-      window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-      });
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth"
+    });
   });
 });
 
@@ -316,10 +322,10 @@ function handleResize() {
   // Temporarily remove transition from header nav
     headerNav.classList.add("no-transition");
 
-    // Put transition back after resize is done
-    setTimeout(() => {
-      headerNav.classList.remove("no-transition");
-    }, 0);
+  // Put transition back after resize is done
+  setTimeout(() => {
+    headerNav.classList.remove("no-transition");
+  }, 0);
 }
 handleResize();
 
@@ -344,44 +350,43 @@ function openDialog() {
   // Save scroll position so the page won't
   // scroll to the top when modal is shown
   scrollPosition = window.scrollY;
-  document.body.style.position = 'fixed';
+  document.body.style.position = "fixed";
   document.body.style.top = `-${scrollPosition}px`;
-  document.body.style.width = '100%';
+  document.body.style.width = "100%";
 
-  // Remove the scroll event listener for the intro section
+  // Remove the intersection observer for the intro section resizing
   // since it is in conflict with the dialog scroll
-  originalScrollListener = handleScroll;
-  window.removeEventListener("scroll", handleScroll);
+  introResizeObserver.unobserve(document.documentElement);
 
   dialog.showModal();
 }
 
 function closeDialog() {
   // Restore scroll position
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
   window.scrollTo(0, scrollPosition);
 
-  // Re-add the scroll event listener for the intro section
+  // Re-add the intersection observer for the intro section resizing
   if (originalScrollListener) {
-    window.addEventListener("scroll", originalScrollListener);
+    introResizeObserver.observe(document.documentElement);
   }
 
   dialog.close();
 }
 
 // Add event listener to close the dialog when clicking outside the modal
-dialog.addEventListener('click', (e) => {
-  if (!e.target.closest('.dialog__content')) {
+dialog.addEventListener("click", (e) => {
+  if (!e.target.closest(".dialog__content")) {
     closeDialog();
   }
 });
 
 // Add event listener to close the dialog when
 // clicking on the "close" button in the modal
-document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
-    closeDialog();
+document.querySelector(".dialog__close-btn").addEventListener("click", (e) => {
+  closeDialog();
 });
 
 

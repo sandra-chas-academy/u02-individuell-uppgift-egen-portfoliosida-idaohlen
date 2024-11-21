@@ -573,6 +573,10 @@ h3, .heading-3 {
   background: var(--card-image);
   background-position: 50% 50%;
   background-size: cover;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .card__content {
