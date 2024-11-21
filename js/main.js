@@ -344,7 +344,6 @@ toggleNav.addEventListener("click", (e) => {
 /* ---------------------------------------------- */
 
 let scrollPosition = 0;
-let originalScrollListener = null;
 
 function openDialog() {
   // Save scroll position so the page won't
@@ -369,9 +368,7 @@ function closeDialog() {
   window.scrollTo(0, scrollPosition);
 
   // Re-add the intersection observer for the intro section resizing
-  if (originalScrollListener) {
-    introResizeObserver.observe(document.documentElement);
-  }
+  introResizeObserver.observe(document.documentElement);
 
   dialog.close();
 }

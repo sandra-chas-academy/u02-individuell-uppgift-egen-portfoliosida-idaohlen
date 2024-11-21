@@ -16,3 +16,52 @@
 .no-transition {
   transition: none !important;
 }
+
+
+/* Animations ----------------------------------- */
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+
+  }
+}
+
+@keyframes fade-in-social {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem) translateX(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+
+  }
+}
+
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}
+
+@keyframes grow {
+  0% { transform: scale(0) }
+  100% { transform: scale(1) }
+}
