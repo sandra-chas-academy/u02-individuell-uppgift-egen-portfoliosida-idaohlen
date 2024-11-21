@@ -5,6 +5,8 @@
 const headerNav = document.querySelector(".header__nav");
 const toggleNav = document.querySelector(".toggle-nav");
 
+const introSection = document.querySelector("#intro");
+
 const projectsElement = document.querySelector(".projects-container");
 const educationList = document.querySelector(".education-list");
 const workList = document.querySelector(".work-list");
@@ -256,15 +258,21 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 // RESIZE INTRO SECTION ON SCROLL
 /* ---------------------------------------------- */
 
-// Scroll down to shrink the intro section
-function handleScroll() {
-  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
-    document.querySelector(".intro").style.maxHeight = "40rem";
-} else {
-  document.querySelector(".intro").style.maxHeight = "100vh";
+// Shrink the intro section when scrolling down
+// go back to full height when scrolling back to the top
+const introResize = (entries, observer) => {
+  const entry = entries[0];
+  if (!entry.isIntersecting) introSection.style.maxHeight ="40rem";
+  else introSection.style.maxHeight = "100vh";
+  ;
 }
-}
-window.addEventListener("scroll", handleScroll);
+
+const introResizeObserver = new IntersectionObserver(introResize, {
+  root: null,
+  threshold: 0.95
+});
+
+introResizeObserver.observe(document.documentElement);
 
 // Scroll to sections from header nav links
 // fix to adjust for the intro section shrinking on scrolling down
