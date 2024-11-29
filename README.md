@@ -1,4 +1,5 @@
 # Individuell uppgift u02 - Egen portfoliosida
+[Uppgiften live på Netlify](https://idaohlen-u02.netlify.app)
 
 ## Sammanfattning av projekt
 
