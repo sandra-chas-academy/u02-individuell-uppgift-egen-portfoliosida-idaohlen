@@ -1,9 +1,11 @@
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 // DOM ELEMENTS
-/* ------------------------------------------------------ */
+/* ---------------------------------------------- */
 
 const headerNav = document.querySelector(".header__nav");
 const toggleNav = document.querySelector(".toggle-nav");
+
+const introSection = document.querySelector("#intro");
 
 const projectsElement = document.querySelector(".projects-container");
 const educationList = document.querySelector(".education-list");
@@ -15,12 +17,24 @@ const dialogContent = document.querySelector(".dialog__content");
 
 
 /* ---------------------------------------------- */
+// VARIABLES
+/* ---------------------------------------------- */
+
+const introHeight = "40rem";
+const introFullHeight = "100vh";
+
+const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+
+/* ---------------------------------------------- */
 // FETCH & RENDER GITHUB REPOS FOR PROJECT SECTION
 /* ---------------------------------------------- */
 
 // Load GitHub repos for Projects section
 async function loadProjects() {
-  const loader = createLoader(".projects-container", "projects-loader");
+  const loader = createLoader(".projects-container", "projects-loader", "white");
+  projectsElement.style.maxHeight = "0";
+  projectsElement.style.opacity = "0";
 
   let repos = [];
 
@@ -78,17 +92,20 @@ async function loadProjects() {
       });
 
       // Append card to projects container
-      removeLoader(loader);
       projectsElement.appendChild(card);
+
     }
   }
+  removeLoader(loader);
+  projectsElement.style.maxHeight = "none";
+  projectsElement.style.opacity = "1";
 }
 
 // Get repos from GitHub
 async function getRepos() {
   try {
     const response = await fetch("https://api.github.com/users/idaohlen/repos");
-    if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
+    if (!response.ok) throw new Error("Unable to retrieve projects from GitHub.");
 
     let repos = await response.json();
     // Do not include profile repo
@@ -103,7 +120,7 @@ async function getRepos() {
 async function getRepoLanguages(url) {
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Unable to retrieve repo languages.');
+    if (!response.ok) throw new Error("Unable to retrieve repo languages.");
 
     const languages = await response.json();
     return Object.keys(languages);
@@ -120,7 +137,7 @@ async function getCardImageHTML(url) {
   const response = await fetch(url);
 
   if (response.ok) {
-    return `<div class="card__image" style='background-image:url(${url})'></div>`;
+    return `<div class="card__image" style="background-image:url(${url})"></div>`;
   } else {
     return `<div class="card__image"></div>`;
   }
@@ -187,7 +204,7 @@ function renderTechListContents(list, data) {
     const div = document.createElement("div");
     div.classList.add("tech-list__item");
     div.innerHTML = `
-          <i class="icon ${item.icon}" title="${item.name}"></i>
+      <i class="icon ${item.icon}" title="${item.name}"></i>
     `;
     list.appendChild(div);
   });
@@ -201,12 +218,14 @@ function renderTechListContents(list, data) {
 // LOADER
 /* ---------------------------------------------- */
 
-function createLoader(before, className) {
+function createLoader(before, className, style = false) {
   before = document.querySelector(before);
 
   const loader = document.createElement("div");
   loader.classList.add("loader", className);
-  return before.insertAdjacentElement('beforebegin', loader);
+  if (style === "white") loader.classList.add("loader--white");
+
+  return before.insertAdjacentElement("beforebegin", loader);
 }
 
 function removeLoader(loader) {
@@ -223,21 +242,21 @@ function removeLoader(loader) {
 
 function startMarquee(element, repeatCount = 7, step = 1) {
   function animateMarquee() {
-      position = position < width ? position + step : 1;
-      element.style.marginLeft = `${-position}px`;
-      element.style.overflow = 'hidden';
-      element.style.whiteSpace = 'nowrap';
-      requestAnimationFrame(animateMarquee);
+    position = position < width ? position + step : 1;
+    element.style.marginLeft = `${-position}px`;
+    element.style.overflow = "hidden";
+    element.style.whiteSpace = "nowrap";
+    requestAnimationFrame(animateMarquee);
   };
 
   let position = 0;
   const initialStep = step;
-  const space = '';
+  const space = "";
   const content = element.innerHTML;
-  element.innerHTML = Array(repeatCount).fill(content + space).join('');
-  element.style.position = 'absolute';
+  element.innerHTML = Array(repeatCount).fill(content + space).join("");
+  element.style.position = "absolute";
   const width = element.clientWidth + 1;
-  element.style.position = '';
+  element.style.position = "";
 
   element.onmouseover = () => step = 0;
   element.onmouseout = () => step = initialStep;
@@ -250,41 +269,42 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 // RESIZE INTRO SECTION ON SCROLL
 /* ---------------------------------------------- */
 
-// Scroll down to shrink the intro section
-function handleScroll() {
-  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
-    document.querySelector(".intro").style.maxHeight = "40rem";
-} else {
-  document.querySelector(".intro").style.maxHeight = "100vh";
+// Shrink the intro section when scrolling down
+// go back to full height when scrolling back to the top
+function introResize(entries, observer) {
+  const entry = entries[0];
+  if (!entry.isIntersecting) introSection.style.maxHeight = introHeight;
+  else introSection.style.maxHeight = introFullHeight;
 }
-}
-window.addEventListener("scroll", handleScroll);
+
+const introResizeObserver = new IntersectionObserver(introResize, {
+  root: null,
+  threshold: 0.95
+});
+
+introResizeObserver.observe(document.documentElement);
 
 // Scroll to sections from header nav links
 // fix to adjust for the intro section shrinking on scrolling down
-document.querySelectorAll('header nav a').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-      e.preventDefault();
+document.querySelectorAll("header nav a").forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
 
-      const targetId = this.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
+    const targetId = this.getAttribute("href").substring(1);
+    const targetElement = document.getElementById(targetId);
 
-      // Convert 40rem to pixels
-      const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const remHeight = 40 * remInPixels;
+    // Convert 40rem to pixels
+    const remHeight = Number.parseFloat(introHeight) * remInPixels;
 
-      // Get the height of 100vh in pixels
-      const vhHeight = window.innerHeight;
+    // Calculate the offset
+    const offset = window.innerHeight - remHeight;
 
-      // Calculate the offset
-      const offset = vhHeight - remHeight;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
 
-      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
-
-      window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-      });
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth"
+    });
   });
 });
 
@@ -302,10 +322,10 @@ function handleResize() {
   // Temporarily remove transition from header nav
     headerNav.classList.add("no-transition");
 
-    // Put transition back after resize is done
-    setTimeout(() => {
-      headerNav.classList.remove("no-transition");
-    }, 0);
+  // Put transition back after resize is done
+  setTimeout(() => {
+    headerNav.classList.remove("no-transition");
+  }, 0);
 }
 handleResize();
 
@@ -324,50 +344,46 @@ toggleNav.addEventListener("click", (e) => {
 /* ---------------------------------------------- */
 
 let scrollPosition = 0;
-let originalScrollListener = null;
 
 function openDialog() {
   // Save scroll position so the page won't
   // scroll to the top when modal is shown
   scrollPosition = window.scrollY;
-  document.body.style.position = 'fixed';
+  document.body.style.position = "fixed";
   document.body.style.top = `-${scrollPosition}px`;
-  document.body.style.width = '100%';
+  document.body.style.width = "100%";
 
-  // Remove the scroll event listener for the intro section
+  // Remove the intersection observer for the intro section resizing
   // since it is in conflict with the dialog scroll
-  originalScrollListener = handleScroll;
-  window.removeEventListener("scroll", handleScroll);
+  introResizeObserver.unobserve(document.documentElement);
 
   dialog.showModal();
 }
 
 function closeDialog() {
   // Restore scroll position
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
   window.scrollTo(0, scrollPosition);
 
-  // Re-add the scroll event listener for the intro section
-  if (originalScrollListener) {
-    window.addEventListener("scroll", originalScrollListener);
-  }
+  // Re-add the intersection observer for the intro section resizing
+  introResizeObserver.observe(document.documentElement);
 
   dialog.close();
 }
 
 // Add event listener to close the dialog when clicking outside the modal
-dialog.addEventListener('click', (e) => {
-  if (!e.target.closest('.dialog__content')) {
+dialog.addEventListener("click", (e) => {
+  if (!e.target.closest(".dialog__content")) {
     closeDialog();
   }
 });
 
 // Add event listener to close the dialog when
 // clicking on the "close" button in the modal
-document.querySelector(".dialog__close-btn").addEventListener('click', (e) => {
-    closeDialog();
+document.querySelector(".dialog__close-btn").addEventListener("click", (e) => {
+  closeDialog();
 });
 
 
