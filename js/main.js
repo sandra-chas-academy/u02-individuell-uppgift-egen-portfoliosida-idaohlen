@@ -271,7 +271,7 @@ function startMarquee(element, repeatCount = 7, step = 1) {
 
 // Shrink the intro section when scrolling down
 // go back to full height when scrolling back to the top
-const introResize = (entries, observer) => {
+function introResize(entries, observer) {
   const entry = entries[0];
   if (!entry.isIntersecting) introSection.style.maxHeight = introHeight;
   else introSection.style.maxHeight = introFullHeight;
