@@ -1,76 +1,44 @@
-# Instruktioner
+# Individuell uppgift u02 - Egen portfoliosida
+[Uppgiften live på Netlify](https://idaohlen-u02.netlify.app)
 
-Denna uppgift går ut på att du bygga vidare uppgift u01 - Portfoliosida utifrån designskiss med Javascript. Du är nu fri att ändra till egen design / layout, samt eget innehåll. Det är dock viktigt att du behåller en sektion för CV ("About me") och en sektion med projekt ("Projects") eftersom du ska vidareutveckla sidan med Javascript på dessa sektioner. 
+## Sammanfattning av projekt
 
-## Vad du ska göra
+Jag har byggt en personlig portfolio-sida med HTML, CSS samt använt JavaScript för att skapa interaktiva inslag och dynamiskt skapa innehåll utifrån lokala JSON-filer samt extern data hämtad genom GitHubs API.
 
-Du ska bygga vidare på  u01 - Portfoliosida utifrån designskiss med Javascript. och se till att du följer följande kravställningar: 
+Eftersom portfolio5 innehåller relativt lite innehåll valde jag att bygga den som en single page, med en navigationsmeny som scrollar ner till innehållet i respektive sektion. Detta behöver man inte nödvändigtvis lösa med JavaScript, men jag var tvungen att göra det för att CSS-only lösningen inte funkade ihop med en annan scroll-baserad funktion jag använder på sidan. Navigationen är responsiv och kan i mobilvy väljas att öppnas eller stängas, vilket är implementerat med JavaScript. Den första “intro”-sektionen har en 100vh höjd tills att man scrollar ner, då krymper den ihop. Det har jag implementerat med hjälp av intersection observer API:n, som ska vara mer prestandavänlig än att lägga en eventlyssnare med “scroll” på body, vilket jag testade först.
 
-### CV i en fil:
-Dina egna utbildningar och tidigare arbetsplatser ska nu ersätta "About me"-sidan. Ta med så mycket som möjligt att ditt "riktiga CV", men iallafall minst tre poster av varje.
-Vilka utbildningar du läst och vilka tidigare arbeten du haft ska ligga i en separat fil i JSON-format. Denna JSON-fil ska läsas och och generera ditt CV på den tidigare motsvarigheten av "About me" sidan.
+I sektionen “Projects” laddar jag in några repos genom GitHubs API för detta med `fetch()`. Jag hämtar namn + description, plus att jag kör en extra fetch efter använda "languages" att visa i mina cards för projekten. Bilderna finns lokalt i portfoliot, och jag använder `fetch()` för att se om det existerar en bild med ett filnamn som överensstämmer med namnet på projektet, annars visas ingen bild (detta för att försöka undvika HTTP-errors ifall det inte går att hitta någon bild). Klickar man på ett card poppar det också up en modulruta. Popup-modalen är ganska värdelös innehållsmässigt då det inte tillför något att klicka fram den, utan den är mest där för att jag ville testa att använda det inbyggda `<dialog>` HTML-elementet och lösa lite problem som att stänga den när man klickar utanför modalen, och att stoppa att man kan fortsätta scrolla på sidan när den är öppnad.
 
+Innehållet i “about me” sektionen laddar jag in från JSON-filer som ligger lokalt i portfolio-projektet.
 
-### Interaktiva scripts:
-Din CV-sida ska innehålla minst två interaktiva JavaScript. Exempel kan vara en modal, slideshow, scroll-effekt, dölja/visa element, o.s.v
+I de sektioner där jag fetch:ar innehåll så har jag byggt in en animerad loader som snurrar medan innehållet laddas in. Eftersom mitt internet var för snabbt blev det lite svårt att felsöka ifall de faktiskt funkade, men med hjälp av webläsarens devtools kunde jag simulera långsamt internet och se till att det fungerade som det skulle.
 
-### Portfolio:
- Du publicerar minst två uppgifter / projekt från tidigare eller nuvarande studier / arbete inom HTML /CSS
+Överlag så har jag fått till de funktioner jag ville ha på sidan, och gjorde en enkel och stilren design som ser bra ut både på desktop och mobil. Det är lagom mycket animationer för att ge ett lite mjukare intryck när man scrollar och hovrar över element. Det hade varit kul att göra en lite mer kreativ design, men samtidigt föredrar jag portfoliosidor som är enklare och lätta att läsa.
 
-### 👉  VG-krav
+## Teoretiska frågor
+### Vad kan man utveckla m.h.a av Javascript inom frontend?
+I teorin kan man utveckla i stort sett vad som helst med JavaScript, vilket många utvecklare också har gjort. JavaScripts huvudsakliga uppgift som ett programmeringsspråk är att skapa interaktivitet på hemsidor, vilket innebär att det är uppbyggt med detta i åtanke. Att skriva kod till frontend innebär att man kommer att använda sig av JavaScript, då det i stort sett är det enda språket som är integrerat att kunna kommunicera direkt med webbläsaren.
 
-Din portfolio ska utökas så att den hämtar in publika projekt som finns i din egen Github via API. Den ska visa dessa projekt i din portfolio med namn och beskrivning.
+En stor del av frontendutveckling med JavaScript handlar om att kunna manipulera DOM:en, en hierarkisk struktur av ett HTML-dokument som renderas på en hemsida. Genom DOM-manipulation kan man skapa, ta bort och flytta runt HTML element, samt att ändra deras utseende genom CSS som även det går att manipulera via JavaScript. En annan stor del av JavaScript är att kunna lyssna efter händelser som användare utför på sidan, och därefter exekutera kod utefter det. Det finns också ett flertal webb-API:er som ger JavaScript tillgång till många olika sätt att kontrollera saker i webbläsaren och till och med komma åt information från användarens maskin.
 
-Du får gärna ha både dessa projekt och andra som genereras utifrån JSON-data om du känner för det, eller så ersätter du projekten så det bara är dina Github-projekt. Eventuellt kan du behöva komplettera datan från Github API med t.ex bilder ifrån JSON-datan.
+JavaScript innehåller samma grundläggande programmeringskoncept som andra programmeringsspråk så som variabler, funktioner, loopar och matematiska räknesätt, vilket innebär att man kan göra beräkningar, återanvända kod och utföra repetetiva uppgifter mer effektivt. JavaScript kan även hämta in data från externa eller interna API:er och använda det till att skapa dynamiskt innehåll, eller för att visa information som sparas på serversidan eller i externa databaser.
 
-När hämtningen av projekten sker ska det finnas information om att projekten håller på att ladda in så att besökaren inte undrar varför sidan först är tom.
+### Vad är JSON och hur används det inom frontend?
+JSON står för “JavaScript Object Notation” och är ett dataformat med ett syntax som efterliknar JavaScript-objekt, vilket gör det lätt att konvertera data från JSON-filer till något som kan bearbetas i JavaScript. Detta innebär att JSON framförallt används inom webbutveckling, men man kan även stöta på det i andra applikationer där utvecklaren ansett att JSON bra för att representera data.
 
+Att använda JSON i praktiken inom frontend innebär att man kan spara data i separata filer frånskilt från sina JS-dokument för bättre organisation, och när man jobbar med API:er är det vanligt att den informationen man skickar/tar emot ges i JSON-format på grund av den enkla konverteringen till JavaScript-objekt.
 
+XML är ett annat typ av format som är populärt vars syntax liknar HTML, och är delvis en föregångare till JSON då det släpptes många år tidigare, och JSON blev inte formellt en rekommendation inom internetstandarden förrän år 2013. Beroende på vad man har för behov kan ett format vara mer lämpligt än ett annat, men för just API:er på webben är JSON edn utbredd standard.
 
-### Tekniska krav:
-* Validerad med 0 fel på https://validator.w3.org
-* Inga errors i Console
+### Vad är HTTP och varför bör man som frontendutvecklare ha kunskap om det och dess protokoll?
 
-### Sammantfattning av projekt + teoretiska frågor
+HTTP är ett protokoll för att skicka data över webben mellan t.ex. en webbläsare och en webbserver. HTTP är byggt på att man skickar förfrågningar mellan enheter och sedan får svar som innehåller det man frågat efter, vilket kan bestå av HTML-sidor, CSS, bilder, JavaScript-filer, data i form av JSON eller XML, m.m.
 
-1. Du sammanfattar ditt projekt i README.md och reflekterar kring styrkor och ev brister. Max 500 ord.
-2. Du svarar på dessa frågor (max 800 ord):
-
-Vad kan man utveckla m.h.a av Javascript inom frontend?
-Vad är JSON och hur används det inom frontend?
-Vad är HTTP och varför bör man som frontendutvecklare ha kunskap om det och dess protokoll?
+Som frontendutvecklare behöver man inte nödvändigtvis ha en djupgående teknisk förståelse för hur HTTP-protokollet fungerar, men man behövber ändå ha en grundlig förståelse av det för att kunna utföra vissa frontenduppgifter så som att skicka data via formulär, eller för att skicka och ta emot data via API:er. Det är också nödvändigt att veta vad felmeddelanden betyder när något inte gått till som man tänkt sig, då blir det lättare att felsöka vart någonstans det har blivit fel; en felstavning i frontend-koden som gör att HTTP-requesten inte kommer iväg dit den ska är lätt att åtgärda, men dålig internetuppkoppling eller ett fel på servern är svårare att fixa, men då vet man i varje fall vad problemet är och behöver inte slösa tid på att försöka fixa fel orsak.
 
 
-## Kriterier för bedömning
+## Resurser
 
-
-Icke Godkänd (IG), Godkänd (G) eller Väl Godkänd (VG)
-
-### Godkänd (G)
-Din portfolio-sida uppfyller alla krav enligt kravspecifikationen.
-Du visar att du kan utan allvarliga brister eller missar utveckla denna portfoliosida enligt kraven
-Du sammanfattar ditt projekt samt ger ett översiktligt och korrekt svar på frågorna
-
-
-### Väl Godkänd (VG)
-
-Din portfolio-sida uppfyller alla krav enligt kravspecifikationen samt VG-kraven
-Du uppvisar en mer avancerad förståelse för Git genom att jobba med en developer-branch som du sedan mergar i main
-Du visar att du kan utan brister, eller bara i sådan omfattning att de knappt märks eller påverkar slutresultatet
-
-
-### Börja uppgift / Din inlämning
-* Du börjar och lämnar in din uppgift genom Github Classroom på denna länk.
-* Återkoppling ges i Canvas
-
-
-
-
-
-
-
-
-
-
-
-# 
+- [Icons generated from iconify.design](https://iconify.design)
+- [Animated hamburger menu](https://codepen.io/designcouch/pen/ExvwPY)
+- [Scrolling text marquee](https://getbutterfly.com/javascript-marquee-a-collection-of-scrolling-text-snippets/)

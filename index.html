@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ida Öhlén - Portfolio</title>
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Font: Karla -->
+  <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/index.css">
+  <!-- Script -->
+  <script src="./js/main.js" defer></script>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="toggle-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="header__nav hidden">
+        <ul class="header__nav-list">
+          <li class="header__nav-item"><a href="#skills"><i class="icon icon-lightbulb"></i> Skills</a></li>
+          <li class="header__nav-item"><a href="#projects"><i class="icon icon-code"></i> Projects</a></li>
+          <li class="header__nav-item"><a href="#about"><i class="icon icon-message"></i> About me</a></li>
+          <li class="header__nav-item"><a href="#contact"><i class="icon icon-mail"></i> Contact</a></li>
+        </ul>
+        <ul class="socials-list">
+          <li class="socials-list__item"><a href="https://www.linkedin.com/in/idaohlen/"><i class="icon icon-linkedin"></i> <span class="socials-list__label">LinkedIn</span></a></li>
+          <li class="socials-list__item"><a href="https://github.com/idaohlen"><i class="icon icon-github"></i> <span class="socials-list__label">GitHub</span></a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main">
+
+      <section id="intro" class="section intro">
+        <div class="section__content">
+          <div class="intro__image">
+            <img src="./img/zigge.png" alt="Pixel art dog.">
+          </div>
+          <div class="intro__text">
+            <hgroup class="intro__heading">
+              <h1 class="intro__title">Ida Öhlén</h1>
+              <p class="intro__tagline">Full Stack Developer</p>
+            </hgroup>
+            <p>I am a junior web developer located in <b>Stockholm/Uppsala</b> with a background in graphic design and illustration.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Skills -->
+      <section id="skills" class="section section--opaque skills">
+        <div class="section__content">
+          <h2 class="heading-2 text-gradient">Skills</h2>
+          <p>I am a problem solver who enjoys learning new things and trying out new technologies. As a web developer I primarily have experience working with <b>CSS</b>, <b>JavaScript</b> and <b>Vue.js</b>, but I've also built projects using <b>PHP</b>.</p>
+
+          <p>I also have a great interest in <b>art</b>, <b>storytelling</b> and <b>game development</b>, so I have some experience with <b>C#</b> and the game engine <b>Unity</b>.</p>
+
+          <!-- Skill list -->
+          <div class="skill-list-container">
+            <div class="skill-list">
+              <div class="skill-list__title">Languages:</div>
+              <div class="skill-list__item pill">JavaScript</div>
+              <div class="skill-list__item pill">PHP</div>
+              <div class="skill-list__item pill">C#</div>
+            </div>
+
+            <div class="skill-list">
+              <div class="skill-list__title">Frameworks:</div>
+              <div class="skill-list__item pill">Vue.js</div>
+            </div>
+          </div>
+
+          <!-- Tech list marquee -->
+          <div class="tech-list__wrapper">
+            <div class="tech-list"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Projects -->
+      <section id="projects" class="section projects">
+        <div class="section__content">
+          <h2 class="heading-2">Projects</h2>
+          <div class="projects-container"></div>
+        </div>
+      </section>
+
+      <!-- Section: About -->
+      <section id="about" class="section section--opaque about">
+        <div class="section__content">
+          <h2 class="heading-2 text-gradient">About me</h2>
+
+          <h3 class="heading-3">Education</h3>
+          <ul class="experience-list education-list"></ul>
+
+          <h3 class="heading-3">Work experience</h3>
+          <ul class="experience-list work-list"></ul>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer id="contact" class="section footer">
+      <div class="section__content">
+        <h2 class="heading-2 no-border">Contact me</h2>
+        <ul class="contact-list">
+          <li class="contact-list__item contact-list__item-email"><a href="mailto:ida.ohlen@outlook.com"><i class="icon icon-mail"></i> Send me an email</a></li>
+          <li class="contact-list__item"><a href="https://www.linkedin.com/in/idaohlen/"><i class="icon icon-linkedin"></i> Linked In</a></li>
+          <li class="contact-list__item"><a href="https://github.com/idaohlen"><i class="icon icon-github"></i> GitHub</a></li>
+        </ul>
+
+        <p class="footer__credits">Built by <b>Ida Öhlén</b> with HTML, CSS and JavaScript.</p>
+      </div>
+    </footer>
+  </div>
+  <dialog class="dialog">
+    <div class="dialog__container">
+      <button autofocus class="dialog__close-btn"><i class="icon-close"></i></button>
+      <div class="dialog__content">
+        <p>Modal text.</p>
+      </div>
+    </div>
+  </dialog>
+</body>
+</html>

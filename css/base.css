@@ -1,0 +1,45 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: var(--base-font);
+}
+
+body {
+  margin: 0;
+  background: var(--body-bg) fixed;
+  font-size: 1.6rem;
+  color: var(--body-text);
+}
+
+body.dialog-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 1rem 0;
+}
+
+img {
+  width: 100%;
+}
+
+a {
+  color: var(--link-text);
+  text-decoration: underline var(--link-decoration);
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: var(--link-text-hover);
+    text-decoration: none;
+  }
+}
