@@ -105,7 +105,7 @@ async function loadProjects() {
 async function getRepos() {
   try {
     const response = await fetch("https://api.github.com/users/idaohlen/repos");
-    if (!response.ok) throw new Error('Unable to retrieve projects from GitHub.');
+    if (!response.ok) throw new Error("Unable to retrieve projects from GitHub.");
 
     let repos = await response.json();
     // Do not include profile repo
@@ -120,7 +120,7 @@ async function getRepos() {
 async function getRepoLanguages(url) {
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Unable to retrieve repo languages.');
+    if (!response.ok) throw new Error("Unable to retrieve repo languages.");
 
     const languages = await response.json();
     return Object.keys(languages);
@@ -137,7 +137,7 @@ async function getCardImageHTML(url) {
   const response = await fetch(url);
 
   if (response.ok) {
-    return `<div class="card__image" style='background-image:url(${url})'></div>`;
+    return `<div class="card__image" style="background-image:url(${url})"></div>`;
   } else {
     return `<div class="card__image"></div>`;
   }
